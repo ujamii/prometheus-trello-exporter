@@ -15,7 +15,7 @@ In both cases, you will need the api key and an auth token, which you can create
 **Installation**
 
 ```shell
-composer req ujamii/trello-exporter
+composer req ujamii/prometheus-trello-exporter
 ```
 
 **Usage in your custom file**

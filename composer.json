@@ -1,5 +1,5 @@
 {
-    "name": "ujamii/trello-exporter",
+    "name": "ujamii/prometheus-trello-exporter",
     "description": "Metrics endpoint for trello data.",
     "type": "project",
     "license": "MIT",
