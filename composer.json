@@ -1,0 +1,21 @@
+{
+    "name": "ujamii/trello-exporter",
+    "description": "Metrics endpoint for trello data.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Grundkötter",
+            "email": "mg@ujamii.com"
+        }
+    ],
+    "require": {
+        "stevenmaguire/trello-php": "^0.5.3",
+        "openmetrics-php/exposition-text": "^0.3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ujamii\\OpenMetrics\\Trello\\": "src/"
+        }
+    }
+}
