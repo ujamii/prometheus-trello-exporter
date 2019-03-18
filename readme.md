@@ -35,10 +35,10 @@ you can see the metrics on http://localhost/metrics.
 Configuration is done with 2 env variables: `TRELLO_API_KEY` and `TRELLO_API_TOKEN`.
 
 ```shell
-docker run -d --name trello-prometheus -e TRELLO_API_KEY=verylongfoobarkey -e TRELLO_API_TOKEN=foobarlongtoken -p "80:80" ujamii/trello-exporter
+docker run -d --name trello-prometheus -e TRELLO_API_KEY=verylongfoobarkey -e TRELLO_API_TOKEN=foobarlongtoken -p "80:80" ujamii/prometheus-trello-exporter
 ```
 
-View on [Docker Hub](https://hub.docker.com/r/ujamii/trello-exporter)
+View on [Docker Hub](https://hub.docker.com/r/ujamii/prometheus-trello-exporter)
 
 ## Output
 
