@@ -7,12 +7,19 @@ use OpenMetricsPhp\Exposition\Text\HttpResponse;
 use OpenMetricsPhp\Exposition\Text\Metrics\Gauge;
 use OpenMetricsPhp\Exposition\Text\Types\Label;
 use OpenMetricsPhp\Exposition\Text\Types\MetricName;
+use Stevenmaguire\Services\Trello\Client;
 
 /**
  * Class TrelloExporter
  * @package Ujamii\OpenMetrics\Trello
  */
-class TrelloExporter {
+class TrelloExporter
+{
+
+    /**
+     * @var Client
+     */
+    protected $client;
 
     /**
      * TrelloExporter constructor.
@@ -22,30 +29,36 @@ class TrelloExporter {
      */
     public function __construct(string $apiKey, string $apiToken)
     {
-        $client = new \Stevenmaguire\Services\Trello\Client([
-            'key' => $apiKey,
-            'token'  => $apiToken,
+        $this->client = new Client([
+            'key'   => $apiKey,
+            'token' => $apiToken,
         ]);
+    }
 
-        $boards = $client->getCurrentUserBoards(['filter' => 'open']);
+    /**
+     * @return void
+     */
+    public function run(): void
+    {
+        $boards = $this->client->getCurrentUserBoards(['filter' => 'open']);
 
-        $gaugesTotal = GaugeCollection::withMetricName(MetricName::fromString('trello_cards_in_list_total'))->withHelp('Number of cards per list.');
+        $gaugesTotal  = GaugeCollection::withMetricName(MetricName::fromString('trello_cards_in_list_total'))->withHelp('Number of cards per list.');
         $gaugesLabels = GaugeCollection::withMetricName(MetricName::fromString('trello_labeled_cards_on_board'))->withHelp('Number of cards per board and label.');
 
-        foreach($boards as $board) {
+        foreach ($boards as $board) {
             if ($board->closed) {
                 continue;
             }
 
             $labelsOnBoard = [];
-            $lists = $client->getBoardLists($board->id, ['filter' => 'open', 'cards' => 'open']);
+            $lists         = $this->client->getBoardLists($board->id, ['filter' => 'open', 'cards' => 'open']);
             foreach ($lists as $list) {
                 if ($list->closed) {
                     continue;
                 }
 
                 $gaugesTotal->add(
-                    Gauge::fromValue((float) count($list->cards))->withLabels(
+                    Gauge::fromValue((float)count($list->cards))->withLabels(
                         Label::fromNameAndValue('board', $board->name),
                         Label::fromNameAndValue('list', $list->name)
                     )
@@ -57,7 +70,7 @@ class TrelloExporter {
                             continue;
                         }
 
-                        if (!isset($labelsOnBoard[$label->name])) {
+                        if ( ! isset($labelsOnBoard[$label->name])) {
                             $labelsOnBoard[$label->name] = 0;
                         }
                         $labelsOnBoard[$label->name]++;
@@ -67,7 +80,7 @@ class TrelloExporter {
 
             foreach ($labelsOnBoard as $labelName => $labelCount) {
                 $gaugesLabels->add(
-                    Gauge::fromValue((float) $labelCount)->withLabels(
+                    Gauge::fromValue((float)$labelCount)->withLabels(
                         Label::fromNameAndValue('board', $board->name),
                         Label::fromNameAndValue('label', $labelName)
                     )
@@ -77,11 +90,6 @@ class TrelloExporter {
         }
 
         HttpResponse::fromMetricCollections($gaugesTotal, $gaugesLabels)->withHeader('Content-Type', 'text/plain; charset=utf-8')->respond();
-    }
-
-    public function run()
-    {
-
     }
 
 }
