@@ -44,12 +44,14 @@ class TrelloExporter
 
         $gaugesTotal  = GaugeCollection::withMetricName(MetricName::fromString('trello_cards_in_list_total'))->withHelp('Number of cards per list.');
         $gaugesLabels = GaugeCollection::withMetricName(MetricName::fromString('trello_labeled_cards_on_board'))->withHelp('Number of cards per board and label.');
+        $gaugesMembers = GaugeCollection::withMetricName(MetricName::fromString('trello_cards_per_board_member'))->withHelp('Number of cards per board and member.');
 
         foreach ($boards as $board) {
             if ($board->closed) {
                 continue;
             }
 
+            $cardsPerMember = [];
             $labelsOnBoard = [];
             $lists         = $this->client->getBoardLists($board->id, ['filter' => 'open', 'cards' => 'open']);
             foreach ($lists as $list) {
@@ -69,11 +71,17 @@ class TrelloExporter
                         if (empty($label->name)) {
                             continue;
                         }
-
                         if ( ! isset($labelsOnBoard[$label->name])) {
                             $labelsOnBoard[$label->name] = 0;
                         }
                         $labelsOnBoard[$label->name]++;
+                    }
+
+                    foreach ($card->idMembers as $memberId) {
+                        if (!isset($cardsPerMember[$memberId])) {
+                            $cardsPerMember[$memberId] = 0;
+                        }
+                        $cardsPerMember[$memberId]++;
                     }
                 }
             }
@@ -87,9 +95,18 @@ class TrelloExporter
                 );
             }
 
+            $members = $this->client->getBoardMembers($board->id);
+            foreach ($members as $member) {
+                $gaugesMembers->add(
+                    Gauge::fromValue((float)$cardsPerMember[$member->id])->withLabels(
+                        Label::fromNameAndValue('board', $board->name),
+                        Label::fromNameAndValue('member', $member->fullName)
+                    )
+                );
+            }
         }
 
-        HttpResponse::fromMetricCollections($gaugesTotal, $gaugesLabels)->withHeader('Content-Type', 'text/plain; charset=utf-8')->respond();
+        HttpResponse::fromMetricCollections($gaugesTotal, $gaugesLabels, $gaugesMembers)->withHeader('Content-Type', 'text/plain; charset=utf-8')->respond();
     }
 
 }

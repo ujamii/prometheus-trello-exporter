@@ -45,15 +45,19 @@ View on [Docker Hub](https://hub.docker.com/r/ujamii/prometheus-trello-exporter)
 The script will generate something like:
 
 ```
-# TYPE cards_in_list_total gauge
-# HELP cards_in_list_total Number of cards per list.
-cards_in_list_total{board="FooBar Board", list="To Do"} 2.000000
-cards_in_list_total{board="FooBar Board", list="In Progress"} 0.000000
-cards_in_list_total{board="FooBar Board", list="Done"} 16.000000
-# TYPE labeled_cards_on_board gauge
-# HELP labeled_cards_on_board Number of cards per board and label.
-labeled_cards_on_board{board="FooBar Board", label="on hold"} 2.000000
-labeled_cards_on_board{board="FooBar Board", label="late"} 1.000000
-labeled_cards_on_board{board="FooBar Board", label="needs input"} 5.000000
+# TYPE trello_cards_in_list_total gauge
+# HELP trello_cards_in_list_total Number of cards per list.
+trello_cards_in_list_total{board="FooBar Board", list="To Do"} 2.000000
+trello_cards_in_list_total{board="FooBar Board", list="In Progress"} 0.000000
+trello_cards_in_list_total{board="FooBar Board", list="Done"} 16.000000
+# TYPE trello_labeled_cards_on_board gauge
+# HELP trello_labeled_cards_on_board Number of cards per board and label.
+trello_labeled_cards_on_board{board="FooBar Board", label="on hold"} 2.000000
+trello_labeled_cards_on_board{board="FooBar Board", label="late"} 1.000000
+trello_labeled_cards_on_board{board="FooBar Board", label="needs input"} 5.000000
+# TYPE trello_cards_per_board_member gauge
+# HELP trello_cards_per_board_member Number of cards per board and member.
+trello_cards_per_board_member{board="FooBar Board", member="John Doe"} 3.000000
+trello_cards_per_board_member{board="FooBar Board", member="Jane Doe"} 13.000000
 ...
 ```
