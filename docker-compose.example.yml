@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+    exporter:
+        image: ujamii/prometheus-trello-exporter
+        build: .
+        ports:
+          - 5000:80
+        environment:
+          - TRELLO_API_KEY=1234
+          - TRELLO_API_TOKEN=ABCD
+          - TRELLO_ORG=mycompany
+        # For local development
+        #volumes:
+        #  - ./:/var/www/html
