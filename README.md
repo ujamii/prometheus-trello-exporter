@@ -1,17 +1,20 @@
 # Exporter for trello data in prometheus format
 
-This package uses the [Trello](https://trello.com/) REST [api](https://developers.trello.com/v1.0/reference) to query for some statistics and 
-outputs them in [OpenMetrics](https://github.com/OpenObservability/OpenMetrics) format to be scraped by [prometheus](https://prometheus.io/).
+This package uses the Trello [REST API](https://developers.trello.com/v1.0/reference) to query for some statistics
+and outputs them in [OpenMetrics](https://github.com/OpenObservability/OpenMetrics) format, which can be scraped by
+[Prometheus](https://prometheus.io/).
 
-You can also fire it up as a [docker container](#with-docker).
+For easier deployment we also provide a [Docker container](#with-docker).
+
+## API Keys
+For authentication at the REST API this tool needs a pair of API keys, which you can create by signing into Trello
+and visiting [trello.com/app-key](https://trello.com/app-key)
 
 ## Usage
 
-In both cases, you will need the api key and an auth token, which you can create via
-`https://trello.com/app-key`
+You can either include this library into you own code, or run it as a container.
 
 ### with Composer
-
 **Installation**
 
 ```shell
@@ -23,22 +26,32 @@ composer req ujamii/prometheus-trello-exporter
 ```php
 require 'vendor/autoload.php';
 
-$exporter = new \Ujamii\OpenMetrics\Trello\TrelloExporter('<TRELLO_API_KEY>', '<TRELLO_API_TOKEN>');
+$exporter = new \Ujamii\OpenMetrics\Trello\TrelloExporter('<TRELLO_API_KEY>', '<TRELLO_API_TOKEN>', '<TRELLO_ORG>');
 $exporter->run();
 ```
 
 ### with Docker
 
-The image is based on `php:7.2-apache` and thus exposes data on port 80 by default. Assuming you fire this up with `-p 80:80` on localhost,
-you can see the metrics on http://localhost/metrics.
+The image is based on `php:7.2-apache` and thus exposes data on port 80 by default. Assuming you fire this up with
+`-p 80:80` on localhost, you can see the metrics at [http://localhost/metrics](http://localhost/metrics).
 
-Configuration is done with 2 env variables: `TRELLO_API_KEY` and `TRELLO_API_TOKEN`.
+Configuration is done with three environment variables: `TRELLO_API_KEY` and `TRELLO_API_TOKEN` for authentication and
+an optional `TRELLO_ORG` variable if you want to query the boards from an organization instead of the boards from the
+user.
 
 ```shell
 docker run -d --name trello-prometheus -e TRELLO_API_KEY=verylongfoobarkey -e TRELLO_API_TOKEN=foobarlongtoken -p "80:80" ujamii/prometheus-trello-exporter
 ```
 
-View on [Docker Hub](https://hub.docker.com/r/ujamii/prometheus-trello-exporter)
+Get the prebuild image [Docker Hub](https://hub.docker.com/r/ujamii/prometheus-trello-exporter)
+
+### with Docker Compose
+
+```bash
+cp docker-compose.example.yml docker-copose.yml
+vim docker-compose.yml #add env variables
+docker-compose up -d
+```
 
 ## Output
 
