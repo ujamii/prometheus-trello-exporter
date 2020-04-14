@@ -1,3 +1,15 @@
+## 0.4.0 (April 14, 2020)
+  - [TASK] added missing member variable [TASK] added missing phpdoc for new parameter
+  - [BUGFIX] fixed not working link in subfolders
+  - Merge pull request #1 from codemonauts/development
+  - Merge pull request #2 from ujamii/feature/github-actions
+  - removed lint step (failed)
+  - [TASK] test for github actions
+  - The lockfile belongs in the repository
+  - Implement abbility to get boards from an organization
+  - Added index.html with link to metrics
+  - Added a docker-compose file
+
 ## 0.3.0 (April 05, 2019)
   - [DOC] fixed label names in readme
   - [FEATURE] added trello_cards_per_board_member metric
