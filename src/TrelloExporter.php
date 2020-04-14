@@ -27,12 +27,13 @@ class TrelloExporter
      * @param string $apiKey
      * @param string $apiToken
      */
-    public function __construct(string $apiKey, string $apiToken)
+    public function __construct(string $apiKey, string $apiToken, string $orgID)
     {
         $this->client = new Client([
             'key'   => $apiKey,
             'token' => $apiToken,
         ]);
+        $this->orgID = $orgID;
     }
 
     /**
@@ -40,7 +41,12 @@ class TrelloExporter
      */
     public function run(): void
     {
-        $boards = $this->client->getCurrentUserBoards(['filter' => 'open']);
+        $boards = [];
+        if ($this->orgID) {
+            $boards = $this->client->getOrganizationBoards($this->orgID, ['filter' => 'open']);
+        } else {
+            $boards = $this->client->getCurrentUserBoards(['filter' => 'open']);
+        }
 
         $gaugesTotal  = GaugeCollection::withMetricName(MetricName::fromString('trello_cards_in_list_total'))->withHelp('Number of cards per list.');
         $gaugesLabels = GaugeCollection::withMetricName(MetricName::fromString('trello_labeled_cards_on_board'))->withHelp('Number of cards per board and label.');
@@ -60,7 +66,7 @@ class TrelloExporter
                 }
 
                 $gaugesTotal->add(
-                    Gauge::fromValue((float)count($list->cards))->withLabels(
+                    Gauge::fromValue((float) count($list->cards))->withLabels(
                         Label::fromNameAndValue('board', $board->name),
                         Label::fromNameAndValue('list', $list->name)
                     )
@@ -71,7 +77,7 @@ class TrelloExporter
                         if (empty($label->name)) {
                             continue;
                         }
-                        if ( ! isset($labelsOnBoard[$label->name])) {
+                        if (!isset($labelsOnBoard[$label->name])) {
                             $labelsOnBoard[$label->name] = 0;
                         }
                         $labelsOnBoard[$label->name]++;
@@ -88,7 +94,7 @@ class TrelloExporter
 
             foreach ($labelsOnBoard as $labelName => $labelCount) {
                 $gaugesLabels->add(
-                    Gauge::fromValue((float)$labelCount)->withLabels(
+                    Gauge::fromValue((float) $labelCount)->withLabels(
                         Label::fromNameAndValue('board', $board->name),
                         Label::fromNameAndValue('label', $labelName)
                     )
@@ -98,7 +104,7 @@ class TrelloExporter
             $members = $this->client->getBoardMembers($board->id);
             foreach ($members as $member) {
                 $gaugesMembers->add(
-                    Gauge::fromValue((float)$cardsPerMember[$member->id])->withLabels(
+                    Gauge::fromValue((float) $cardsPerMember[$member->id])->withLabels(
                         Label::fromNameAndValue('board', $board->name),
                         Label::fromNameAndValue('member', $member->fullName)
                     )
@@ -108,7 +114,4 @@ class TrelloExporter
 
         HttpResponse::fromMetricCollections($gaugesTotal, $gaugesLabels, $gaugesMembers)->withHeader('Content-Type', 'text/plain; charset=utf-8')->respond();
     }
-
 }
-
-
