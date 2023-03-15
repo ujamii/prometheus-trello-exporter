@@ -2,7 +2,7 @@ version: "3"
 
 services:
     exporter:
-        image: ujamii/prometheus-trello-exporter
+        image: ghcr.io/ujamii/prometheus-trello-exporter
         build: .
         ports:
           - 5000:80

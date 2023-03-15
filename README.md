@@ -40,10 +40,10 @@ an optional `TRELLO_ORG` variable if you want to query the boards from an organi
 user.
 
 ```shell
-docker run -d --name trello-prometheus -e TRELLO_API_KEY=verylongfoobarkey -e TRELLO_API_TOKEN=foobarlongtoken -p "80:80" ujamii/prometheus-trello-exporter
+docker run -d --name trello-prometheus -e TRELLO_API_KEY=verylongfoobarkey -e TRELLO_API_TOKEN=foobarlongtoken -p "80:80" ghcr.io/ujamii/prometheus-trello-exporter
 ```
 
-Get the prebuild image [Docker Hub](https://hub.docker.com/r/ujamii/prometheus-trello-exporter)
+Get the prebuild image from [GitHub](https://github.com/ujamii/prometheus-trello-exporter/pkgs/container/prometheus-trello-exporter)
 
 ### with Docker Compose
 
