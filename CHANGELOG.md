@@ -1,3 +1,8 @@
+## 0.5.0 (March 15, 2023)
+  - [TASK] switched from docker hub to GitHub packages
+  - [TASK] dropped PHP 7 support 
+  - [TASK] changed default docker image to PHP 8.1 and production ini settings
+
 ## 0.4.0 (April 14, 2020)
   - [TASK] added missing member variable [TASK] added missing phpdoc for new parameter
   - [BUGFIX] fixed not working link in subfolders
