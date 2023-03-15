@@ -10,8 +10,13 @@
         }
     ],
     "require": {
+        "php": ">=8.0",
         "stevenmaguire/trello-php": "^0.5.3",
         "openmetrics-php/exposition-text": "^0.3.1"
+    }
+    ,
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
     },
     "autoload": {
         "psr-4": {

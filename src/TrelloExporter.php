@@ -9,30 +9,13 @@ use OpenMetricsPhp\Exposition\Text\Types\Label;
 use OpenMetricsPhp\Exposition\Text\Types\MetricName;
 use Stevenmaguire\Services\Trello\Client;
 
-/**
- * Class TrelloExporter
- * @package Ujamii\OpenMetrics\Trello
- */
 class TrelloExporter
 {
 
-    /**
-     * @var Client
-     */
-    protected $client;
+    protected Client $client;
 
-    /**
-     * @var string
-     */
-    protected $organizationId;
+    protected string $organizationId;
 
-    /**
-     * TrelloExporter constructor.
-     *
-     * @param string $apiKey
-     * @param string $apiToken
-     * @param string $organizationId
-     */
     public function __construct(string $apiKey, string $apiToken, string $organizationId = '')
     {
         $this->client         = new Client([
@@ -42,9 +25,6 @@ class TrelloExporter
         $this->organizationId = $organizationId;
     }
 
-    /**
-     * @return void
-     */
     public function run(): void
     {
         if ('' !== $this->organizationId) {
