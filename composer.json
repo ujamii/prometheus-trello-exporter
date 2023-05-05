@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=8.0",
-        "stevenmaguire/trello-php": "^0.5.3",
+        "stevenmaguire/trello-php": "^1.0.0",
         "openmetrics-php/exposition-text": "^0.3.1"
     }
     ,
