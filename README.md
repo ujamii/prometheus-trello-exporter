@@ -32,7 +32,7 @@ $exporter->run();
 
 ### with Docker
 
-The image is based on `php:7.2-apache` and thus exposes data on port 80 by default. Assuming you fire this up with
+The image is based on `php:8.1-apache` and thus exposes data on port 80 by default. Assuming you fire this up with
 `-p 80:80` on localhost, you can see the metrics at [http://localhost/metrics](http://localhost/metrics).
 
 Configuration is done with three environment variables: `TRELLO_API_KEY` and `TRELLO_API_TOKEN` for authentication and
