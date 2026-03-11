@@ -412,16 +412,16 @@
         },
         {
             "name": "openmetrics-php/exposition-text",
-            "version": "v0.4.2",
+            "version": "v0.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/openmetrics-php/exposition-text.git",
-                "reference": "4f65004f93e53eac4b9668879b92d3c200a851ba"
+                "reference": "754e0003543f7b0f31c4bd46f88e5f2413f32c40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/openmetrics-php/exposition-text/zipball/4f65004f93e53eac4b9668879b92d3c200a851ba",
-                "reference": "4f65004f93e53eac4b9668879b92d3c200a851ba",
+                "url": "https://api.github.com/repos/openmetrics-php/exposition-text/zipball/754e0003543f7b0f31c4bd46f88e5f2413f32c40",
+                "reference": "754e0003543f7b0f31c4bd46f88e5f2413f32c40",
                 "shasum": ""
             },
             "require": {
@@ -449,9 +449,9 @@
             "description": "Implementation of the text exposition format of OpenMetrics",
             "support": {
                 "issues": "https://github.com/openmetrics-php/exposition-text/issues",
-                "source": "https://github.com/openmetrics-php/exposition-text/tree/v0.4.2"
+                "source": "https://github.com/openmetrics-php/exposition-text/tree/v0.4.3"
             },
-            "time": "2025-06-04T14:59:47+00:00"
+            "time": "2026-02-20T11:21:20+00:00"
         },
         {
             "name": "psr/http-client",
@@ -1394,6 +1394,6 @@
     "platform": {
         "php": ">=8.0"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.6.0"
 }
